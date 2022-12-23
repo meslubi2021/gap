@@ -285,7 +285,7 @@ GAPInput
     TESTMANUALSPASS=yes
     for ch in $SRCDIR/tst/testmanuals/*.tst
     do
-        $GAP -b -L testmanuals.wsp --cover $COVDIR/$(basename $ch).coverage <<GAPInput || TESTMANUALSPASS=no
+        $GAP -b -L testmanuals.wsp <<GAPInput || TESTMANUALSPASS=no
         TestManualChapter("$ch");
         QuitGap(0);
 GAPInput
@@ -295,7 +295,7 @@ GAPInput
     [[ $TESTMANUALSPASS = yes ]] || exit 1
 
     # while we are at it, also test the workspace code
-    $GAP -A --cover $COVDIR/workspace.coverage <<GAPInput
+    $GAP -A <<GAPInput
         SetUserPreference("ReproducibleBehaviour", true);
         # Also test a package banner
         LoadPackage("polycyclic");
@@ -319,11 +319,11 @@ GAPInput
 
     # test building and loading a package kernel extension
     cd "$SRCDIR/tst/mockpkg"
-    testmockpkg "$GAP --cover $COVDIR/testmockpkg.coverage" "$BUILDDIR"
+    testmockpkg "$GAP  "$BUILDDIR"
     ;;
 
   testexpect)
-    INPUTRC=/tmp/inputrc expect -c "spawn $GAP -A -b  --cover $COVDIR/${TEST_SUITE}.coverage" $SRCDIR/dev/gaptest.expect
+    INPUTRC=/tmp/inputrc expect -c "spawn $GAP -A -b $SRCDIR/dev/gaptest.expect
     ;;
 
   *)
@@ -337,7 +337,7 @@ GAPInput
     then
         $GAP $SRCDIR/tst/${TEST_SUITE}.g
     else
-        $GAP --cover $COVDIR/${TEST_SUITE}.coverage \
+        $GAP  \
             <(echo 'SetUserPreference("ReproducibleBehaviour", true);') \
             $SRCDIR/tst/${TEST_SUITE}.g
     fi
